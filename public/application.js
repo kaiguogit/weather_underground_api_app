@@ -1,89 +1,36 @@
 $(function(){
+  $(".search-bar").on("keyup",function(){
+    event.preventDefault();
+    var $form = $(this);
+    var keyword = $form.find("input[type='text']").val();
+    searchCity(keyword, listCities);
+  });
 
-  function searchByTag(tag, callback){
-    getApiKey(function(api_key){
-      $.ajax({
-        url: "https://api.flickr.com/services/rest/",
-        method: "get",
-        dataType: "jsonp",
-        jsonp: "jsoncallback",
-        //http://stackoverflow.com/questions/5694230/can-somehow-change-the-callback-function-name
-        data: {
-          method: "flickr.photos.search",
-          tags: tag,
-          format: "json",
-          api_key: api_key.api_key,
-        },
-        success: function(photos){
-          callback(photos);
-        }
-      });
-    });
-  }
-
-  function getApiKey(callback){
+  function searchCity(keyword, callback){
     $.ajax({
-      url: "api_key",
+      url: "http://autocomplete.wunderground.com/aq",
       method: "get",
-      success: function(api_key){
-        callback(api_key);
+      data: {query: keyword},
+      dataType: "jsonp",
+      jsonp: "cb",
+      success: function(cities){
+        callback(cities);
       }
     });
   }
-  
-  function getPhoto(id, callback){
-    getApiKey(function(api_key){
-      $.ajax({
-        url: "https://api.flickr.com/services/rest/",
-        method: "get",
-        dataType: "jsonp",
-        jsonp: "jsoncallback",
-        data: {
-          method: "flickr.photos.getInfo",
-          photo_id: id,
-          format: "json",
-          api_key: api_key.api_key,
-          secret: api_key.secret
-        },
-        success: function(photo){
-          callback(photo);
-        }
-      });
+  var cities = $("#template_cities").html();
+  var city = $("#template_city").html();
+  var template_cities = Handlebars.compile(cities);
+  var template_city = Handlebars.compile(city);
+
+  function listCities(cities){
+    $(".cities").remove();
+    var $cities = $(template_cities());
+    cities.RESULTS.forEach(function(city){
+      var $city = $(template_city({city_name: city.name}));
+      $cities.append($city);
     });
+    $("body").append($cities);
   }
 
-  function showPhoto(photo){
-    var imgSrc = "https://farm" + photo.farm + ".staticflickr.com/" + photo.server + "/"+ photo.id +"_"+ photo.secret +".jpg"
-    var img = $("<img id='slide_show'>");
-    img.attr('src', imgSrc);
-    var $existingImgs= $("#slide_show");
-    if( $existingImgs.length >0 ){
-      $existingImgs.fadeOut(1000);
-      $existingImgs.remove();
-    }
-
-    $('body').append(img);
-    $("#slide_show").hide();
-    $("#slide_show").fadeIn(1000);
-  }
-  
-
-  searchByTag("lighthouse", function(photos){
-    var photosSaved = photos.photos.photo;
-    // debugger;
-    function myLoop(i) {          
-       setTimeout(function () {   
-          // debugger;
-          console.log(i)
-          showPhoto(photosSaved[i]);
-          console.log(i);          //  your code here                
-          if (i > 0) {
-            i--;
-            myLoop(i);
-            
-          }
-       }, 3000);
-    }
-    myLoop(photosSaved.length-1);
-  });
 });
