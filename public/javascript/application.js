@@ -57,8 +57,7 @@ $(function(){
   $("body").on("click", ".city > a", function(){
     event.preventDefault();
     $this = $(this);
-    $(".city_info_wrapper").append(template_loader_icon);
-    $(".city_info").remove();
+    $(".city_info_wrapper").html(template_loader_icon);
     getApiKey(function(api_key){
       var url = "http://api.wunderground.com/api/";
       var features = "/geolookup/conditions/forecast";
@@ -69,7 +68,6 @@ $(function(){
         url: url,
         method: "get",
         success: function(data){
-          $(".city_info_wrapper").find("#floatBarsG").remove();
           showDetail(data);
         }
       });
@@ -106,9 +104,9 @@ $(function(){
         temp_c: current.temp_c,
     };
     var $city_info = template_city_info(info);
-    $(".city_info").remove();
+    $(".city_info_wrapper").html("");
     $(".city_info_wrapper").append($city_info);
-    $(".city_info_wrapper .city_info > .panel-body > .row").append(forecast);
+    $(".city_info_wrapper .city_info").append(forecast);
   }
 
 });

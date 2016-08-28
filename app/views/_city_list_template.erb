@@ -11,14 +11,9 @@
 
 
 <script id="template_city_info" type="text/x-handlebars-template">
-  <div class="panel panel-default city_info">
-    <div class="panel-heading">
-      <div class="panel-title">
-        Detail {{name}}
-      </div>
-    </div>
     <div class="panel-body">
-      <div class="row">
+      <h3>{{name}}</h3>
+      <div class="row city_info">
         <div class="col-sm-2">
           <div>Today</div>
           <img src={{icon_url}}>
@@ -28,7 +23,6 @@
         </div>
       </div>
     </div>
-  </div>
 </script>
 
 <script id="template_forecast_day" type="text/x-handlebars-template">
