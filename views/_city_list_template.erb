@@ -1,0 +1,42 @@
+<script id="template_cities" type="text/x-handlebars-template">
+  <div class="cities">
+  </div>
+</script>
+  
+<script id="template_city" type="text/x-handlebars-template">
+  <div class="city">
+    <a href="" data-query={{query}}>{{city_name}}</a>
+  </div>
+</script>
+
+
+<script id="template_city_info" type="text/x-handlebars-template">
+  <div class="panel panel-default city_info">
+    <div class="panel-heading">
+      <div class="panel-title">
+        Detail {{name}}
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-2">
+          <div>Today</div>
+          <img src={{icon_url}}>
+          <div>Weather: {{weather}}</div>
+          <div>Temperature: {{temp_c}}</div>
+          <div>humidity: {{relative_humidity}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="template_forecast_day" type="text/x-handlebars-template">
+  <div class="col-sm-2">
+    <div>{{title}}</div>
+    <img src={{icon_url}}>
+    <div>Low: {{low}}</div>
+    <div>High: {{high}}</div>
+    <div>{{fcttext_metric}}</div>
+  </div>
+</script>

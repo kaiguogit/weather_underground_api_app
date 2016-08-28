@@ -1,10 +1,7 @@
 Sinatra
-=============
 
-Brought to you by Lighthouse Labs
+# weather_underground_api_app
+An exercise of using WU api. 
 
-## Getting Started
+User can search by city name and see the forcast for the city in recent days. 
 
-1. `bundle install`
-2. `shotgun -p 3000 -o 0.0.0.0`
-3. Visit `http://localhost:3000/` in your browser
