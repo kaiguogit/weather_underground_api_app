@@ -19,6 +19,7 @@ $(function(){
 
   //Autocomplete on WU API
   function searchCity(keyword, callback){
+    $(".search").append(template_loader_icon);
     $.ajax({
       url: "http://autocomplete.wunderground.com/aq",
       method: "get",
@@ -26,6 +27,7 @@ $(function(){
       dataType: "jsonp",
       jsonp: "cb",
       success: function(cities){
+        $(".search").find("#floatBarsG").remove();
         callback(cities.RESULTS);
       }
     });
@@ -36,6 +38,8 @@ $(function(){
   var city = $("#template_city").html();
   var template_cities = Handlebars.compile(cities);
   var template_city = Handlebars.compile(city);
+  var loader_icon = $("#loader_icon_template").html();
+  var template_loader_icon = Handlebars.compile(loader_icon);
 
   //List cities on screen
   function listCities(cities){
@@ -48,10 +52,13 @@ $(function(){
     $(".search").append($cities);
   }
 
+
   //Listenner to click on each city
   $("body").on("click", ".city > a", function(){
     event.preventDefault();
     $this = $(this);
+    $(".city_info_wrapper").append(template_loader_icon);
+    $(".city_info").remove();
     getApiKey(function(api_key){
       var url = "http://api.wunderground.com/api/";
       var features = "/geolookup/conditions/forecast";
@@ -62,7 +69,7 @@ $(function(){
         url: url,
         method: "get",
         success: function(data){
-          console.log(data);
+          $(".city_info_wrapper").find("#floatBarsG").remove();
           showDetail(data);
         }
       });
@@ -76,8 +83,6 @@ $(function(){
   var template_city_forecast = Handlebars.compile(city_forecast);
   //show city weather detail
   function showDetail(city){
-  
-
     var forecast = "";
     for(i=0;i<4;i++){
       var text = city.forecast.txt_forecast.forecastday[i];
@@ -93,7 +98,6 @@ $(function(){
       forecast += dayDiv;
     }
 
-    
     var current = city.current_observation;
     var info = {
         name: current.display_location.full,
